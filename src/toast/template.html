@@ -1,0 +1,10 @@
+<div class="vue-toast_container"
+     @mouseover="_stopTimer"
+     @mouseleave="_startTimer"
+     :style="style"
+     v-show="isShow"
+     transition>
+  <div class="vue-toast_message">
+    {{ message }}
+  </div>
+</div>

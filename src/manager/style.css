@@ -1,0 +1,9 @@
+.vue-toast-manager_container {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  width: 100%;
+}
+.vue-toast-manager_toasts {
+  position: relative;
+}
