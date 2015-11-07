@@ -6,7 +6,22 @@
 </head>
 <body id='app'>
   <h1>Some page.</h1>
+  <button type="button" name="button" @click="showTime">SHOW TIME</button>
   <vue-toast v-ref:toast></vue-toast>
-  <script src="./build/build.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.7/vue.js" charset="utf-8"></script>
+  <script src="./dist/vue-toast.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      methods: {
+        showTime() {
+          this.$refs.toast.showToast(new Date)
+        }
+      },
+      components: {
+        'vue-toast': window.vueToasts
+      }
+    })
+  </script>
 </body>
 </html>

@@ -1,19 +1,41 @@
+var webpack = require('webpack');
+
 module.exports = {
-  devtool: '#source-map',
   entry: "./src/main.js",
   output: {
-    path: "./build",
-    publicPath: "/build/",
-    filename: "build.js"
+    path: "./dist",
+    publicPath: "/dist/",
+    filename: "vue-toast.js",
+    library: ["vueToasts"],
+    libraryTarget: "umd"
   },
   module: {
     loaders: [
       { test: /\.css$/, loader: "style!css!postcss-loader" },
-      { test: /\.html$/, loader: "html" },
-      { test: /\.js$/, loader: "babel" }
+      { test: /\.html$/, loader: "vue-html" },
+      { test: /\.js$/, loader: "babel", exclude: /node_modules/ }
     ]
   },
   postcss: function () {return [
     require('autoprefixer')
   ]}
+}
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports.output.filename = "vue-toast.min.js",
+  module.exports.plugins = [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      sourceMap: false,
+      compress: {
+        warnings: false
+      }
+    })
+  ]
+} else {
+  module.exports.devtool = '#source-map'
 }

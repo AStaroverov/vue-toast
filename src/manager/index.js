@@ -1,5 +1,3 @@
-import Vue from 'vue'
-
 import './style.css'
 import template from './template.html'
 import vueToast from '../toast'
@@ -12,12 +10,11 @@ const defaultConst = {
 export default {
   template: template,
   data() { return {
-    vueToast: Vue.component('vue-toast', vueToast),
     toasts: [],
     const: defaultConst
   }},
-  ready() {
-    window.m = this;
+  components: {
+    'vue-toast': vueToast
   },
   methods: {
     // Public
@@ -31,17 +28,17 @@ export default {
     },
     // Privet
     _createToast(message) {
-      return new this.vueToast({data: {
+      return new this.$options.components['vue-toast']({data: {
         message: message
       }});
     },
     _pushToast(toast) {
       const DELAY_JUMP = _isNumber(this.const.DELAY_JUMP) ?
-                          this.const.DELAY_JUMP :
-                          defaultConst.DELAY_JUMP;
+      this.const.DELAY_JUMP :
+      defaultConst.DELAY_JUMP;
       const MAX_COUNT = _isNumber(this.const.MAX_COUNT) && this.const.MAX_COUNT >= 1 ?
-                          this.const.MAX_COUNT :
-                          defaultConst.MAX_COUNT;
+      this.const.MAX_COUNT :
+      defaultConst.MAX_COUNT;
 
       this.toasts = this.toasts.reduceRight((prev, toast, i) => {
         if (toast._isDestroyed) {
