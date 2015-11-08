@@ -10,7 +10,7 @@ How does it work? Look it [here](http://astaroverov.github.io/).
 
 ### Settings
 
-Funcion <code>setOptions({})</code> gives opportunities to change settings.
+Funcion <code>setOptions({})</code> lets to change settings.
 * DELAY_JUMP {integer} delay moving toasts | default: 30
 * MAX_COUNT {integer} max toasts number | default: 6
 
