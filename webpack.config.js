@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   entry: "./src/main.js",
@@ -11,19 +12,22 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.css$/, loader: "style!css!postcss-loader" },
+      { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader") },
       { test: /\.html$/, loader: "vue-html" },
       { test: /\.js$/, loader: "babel", exclude: /node_modules/ }
     ]
   },
   postcss: function () {return [
     require('autoprefixer')
-  ]}
+  ]},
+  plugins: [
+    new ExtractTextPlugin("vue-toast.css")
+  ]
 }
 
 if (process.env.NODE_ENV === 'production') {
   module.exports.output.filename = "vue-toast.min.js",
-  module.exports.plugins = [
+  module.exports.plugins = module.exports.plugins.concat([
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"'
@@ -34,8 +38,9 @@ if (process.env.NODE_ENV === 'production') {
       compress: {
         warnings: false
       }
-    })
-  ]
+    }),
+    new ExtractTextPlugin("vue-toast.min.css")
+  ])
 } else {
   module.exports.devtool = '#source-map'
 }

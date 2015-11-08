@@ -7,13 +7,15 @@ How does it work? Look it [here](http://astaroverov.github.io/).
 
 commonJS:
 ```
-impot vueToast from 'vue-toast'
+import 'vue-toast/dist/vue-toast.min.css'
+import vueToast from 'vue-toast'
 Vue.component('vue-toast', vueToast);
 ```
 
 GLobal
 ```
-<script src='./path/to/vue-toast.js'></script>
+<link rel="stylesheet" href="./path/to/vue-toast.min.css" charset="utf-8">
+<script src='./path/to/vue-toast.min.js'></script>
 <script>
   Vue.component('vue-toast', window.vueToast);
 </script>
@@ -33,5 +35,3 @@ Funcion <code>setOptions({})</code> lets to change settings.
 ### Example
 
 Look [here](https://github.com/AStaroverov/vue-toast/blob/master/index.html).
-
-
