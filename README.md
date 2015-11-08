@@ -3,6 +3,22 @@
 Toasts for vuejs.
 How does it work? Look it [here](http://astaroverov.github.io/).
 
+### Usage
+
+commonJS:
+```
+impot vueToast from 'vue-toast'
+Vue.component('vue-toast', vueToast);
+```
+
+GLobal
+```
+<script src='./path/to/vue-toast.js'></script>
+<script>
+  Vue.component('vue-toast', window.vueToast);
+</script>
+```
+
 ### API
 
 * showToast(string) - main function that generates toast and shows him.
