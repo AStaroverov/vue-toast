@@ -20,6 +20,6 @@ Funcion <code>setOptions({})</code> give opportunities change settings
 ### Example
 -----------
 
-<code>
+Look [here](https://github.com/AStaroverov/vue-toast/blob/master/index.html).
 
 
