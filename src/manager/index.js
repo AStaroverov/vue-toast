@@ -1,10 +1,13 @@
 import './style.css'
 import template from './template.html'
 import vueToast from '../toast'
-import {_isNumber} from '../utils.js'
+
+import {isNumber} from '../utils.js'
+
 const defaultConst = {
   DELAY_JUMP: 30,
   MAX_COUNT: 6,
+  POSITION: 'left bottom'
 };
 
 export default {
@@ -13,8 +16,13 @@ export default {
     toasts: [],
     const: defaultConst
   }},
-  components: {
-    'vue-toast': vueToast
+  computed: {
+    classesOfPosition() {
+      return this._updateClassesOfPosition(this.const.POSITION);
+    },
+    directionOfJumping() {
+      return this._updateDirectionOfJumping(this.const.POSITION);
+    }
   },
   methods: {
     // Public
@@ -33,13 +41,10 @@ export default {
       }});
     },
     _pushToast(toast) {
-      const DELAY_JUMP = _isNumber(this.const.DELAY_JUMP) ?
-      this.const.DELAY_JUMP :
-      defaultConst.DELAY_JUMP;
-      const MAX_COUNT = _isNumber(this.const.MAX_COUNT) && this.const.MAX_COUNT >= 1 ?
-      this.const.MAX_COUNT :
-      defaultConst.MAX_COUNT;
+      const DELAY_JUMP = this.const.DELAY_JUMP > 0 ? this.const.DELAY_JUMP : 0;
+      const MAX_COUNT = this.const.MAX_COUNT > 0 ? this.const.MAX_COUNT: 9999;
 
+      // moving||removing old toasts
       this.toasts = this.toasts.reduceRight((prev, toast, i) => {
         if (toast._isDestroyed) {
           return prev;
@@ -50,18 +55,32 @@ export default {
         }
 
         setTimeout(() => {
-          toast.translateY = `-${(i+1)*100}%`;
+          toast.translateY = `${this.directionOfJumping}${(i+1)*100}%`;
         }, i*DELAY_JUMP);
         prev.unshift(toast);
 
         return prev;
       }, []);
+
+      // paste new toast
       setTimeout(() => {
         toast.$mount().$appendTo(this.$els.toasts);
       }, DELAY_JUMP);
 
       this.toasts.unshift(toast);
       return toast;
+    },
+    _updateClassesOfPosition(position) {
+      return position.split(' ').reduce((prev, val) => {
+        prev[`--${val.toLowerCase()}`] = true;
+        return prev;
+      }, {})
+    },
+    _updateDirectionOfJumping(position) {
+      return position.match(/top/i) ? '+' : '-';
     }
+  },
+  components: {
+    'vue-toast': vueToast
   }
 }

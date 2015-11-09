@@ -18,7 +18,8 @@ module.exports = {
     ]
   },
   postcss: function () {return [
-    require('autoprefixer')
+    require('autoprefixer'),
+    require('postcss-nested'),
   ]},
   plugins: [
     new ExtractTextPlugin("vue-toast.css")
@@ -27,7 +28,7 @@ module.exports = {
 
 if (process.env.NODE_ENV === 'production') {
   module.exports.output.filename = "vue-toast.min.js",
-  module.exports.plugins = module.exports.plugins.concat([
+  module.exports.plugins = [
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"'
@@ -40,7 +41,7 @@ if (process.env.NODE_ENV === 'production') {
       }
     }),
     new ExtractTextPlugin("vue-toast.min.css")
-  ])
+  ];
 } else {
   module.exports.devtool = '#source-map'
 }

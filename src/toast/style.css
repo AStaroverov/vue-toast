@@ -1,11 +1,24 @@
 .vue-toast_container {
   position: absolute;
-  bottom: 0;
-  left: 0;
   padding-bottom: 10px;
   transform: translateY(0);
   transition: transform .2s ease-out, opacity .3s ease-out;
   backface-visibility: hidden;
+}
+
+.vue-toast-manager_container {
+  &.--top .vue-toast_container {
+    top: 0;
+  }
+  &.--bottom .vue-toast_container {
+    bottom: 0;
+  }
+  &.--left .vue-toast_container {
+    left: 0;
+  }
+  &.--right .vue-toast_container {
+    right: 0;
+  }
 }
 
 .vue-toast_container.v-enter,

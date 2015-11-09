@@ -16,6 +16,9 @@
       el: '#app',
       methods: {
         showTime() {
+          this.$refs.toast.setOptions({
+            POSITION: 'top right'
+          })
           this.$refs.toast.showToast(new Date)
         }
       },

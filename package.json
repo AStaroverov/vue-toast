@@ -12,6 +12,7 @@
     "extract-text-webpack-plugin": "^0.9.1",
     "postcss": "^5.0.10",
     "postcss-loader": "^0.7.0",
+    "postcss-nested": "^1.0.0",
     "style-loader": "^0.13.0",
     "vue-html-loader": "^1.0.0",
     "webpack": "^1.12.3",
