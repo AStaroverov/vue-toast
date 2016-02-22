@@ -20,6 +20,7 @@ module.exports = {
   postcss: function () {return [
     require('autoprefixer'),
     require('postcss-nested'),
+    require('postcss-hexrgba'),
   ]},
   plugins: [
     new ExtractTextPlugin("vue-toast.css")

@@ -6,20 +6,72 @@
   <link rel="stylesheet" href="/dist/vue-toast.css" charset="utf-8">
 </head>
 <body id='app'>
-  <h1>Some page.</h1>
+  <h3>Options of component.</h3>
+  <br>
+  <label>
+    <input type="text" v-model="maxToasts">
+    maxToasts
+  </label>
+  <br>
+  <label>
+    <input type="text" v-model="position">
+    position
+  </label>
+
+  <hr>
+
+  <h3>Options of toast.</h3>
+  <label>
+    <input type="text" v-model="theme">
+    theme
+  </label>
+  <br>
+  <label>
+    <input type="text" v-model="timeLife">
+    timeLife
+  </label>
+  <br>
+  <label>
+    <input type="checkbox" v-model="closeBtn">
+    closeBtn
+  </label>
+  <hr>
+
   <button type="button" name="button" @click="showTime">SHOW TIME</button>
   <vue-toast v-ref:toast></vue-toast>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.7/vue.js" charset="utf-8"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.16/vue.js" charset="utf-8"></script>
   <script src="./dist/vue-toast.js"></script>
   <script>
     new Vue({
       el: '#app',
+      data: {
+        maxToasts: 6,
+        position: 'bottom right',
+        theme: 'error',
+        timeLife: 3000,
+        closeBtn: true,
+      },
+      watch: {
+        'delayOfJumps + maxToasts + position': 'resetOptions'
+      },
+      attached() {
+        this.resetOptions()
+      },
       methods: {
-        showTime() {
+        resetOptions() {
           this.$refs.toast.setOptions({
-            POSITION: 'top right'
+            delayOfJumps: this.delayOfJumps,
+            maxToasts: this.maxToasts,
+            position: this.position
           })
-          this.$refs.toast.showToast(new Date)
+        },
+        showTime() {
+          this.$refs.toast.showToast(new Date, {
+            theme: this.theme,
+            timeLife: this.timeLife,
+            closeBtn: this.closeBtn
+          })
         }
       },
       components: {

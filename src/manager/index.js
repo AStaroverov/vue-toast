@@ -4,75 +4,76 @@ import vueToast from '../toast'
 
 import {isNumber} from '../utils.js'
 
-const defaultConst = {
-  DELAY_JUMP: 30,
-  MAX_COUNT: 6,
-  POSITION: 'left bottom'
+const defaultOptions = {
+  maxToasts: 6,
+  position: 'left bottom'
 };
 
 export default {
   template: template,
-  data() { return {
-    toasts: [],
-    const: defaultConst
-  }},
+  data() {
+    return {
+      toasts: [],
+      options: defaultOptions
+    }
+  },
   computed: {
     classesOfPosition() {
-      return this._updateClassesOfPosition(this.const.POSITION);
+      return this._updateClassesOfPosition(this.options.position)
     },
     directionOfJumping() {
-      return this._updateDirectionOfJumping(this.const.POSITION);
+      return this._updateDirectionOfJumping(this.options.position)
     }
   },
   methods: {
     // Public
-    showToast(message) {
-      this._pushToast(this._createToast(message));
+    showToast(message, options) {
+      this._addToast(message, options)
+      this._moveToast();
+
       return this;
     },
     setOptions(options) {
-      this.const = Object.assign(this.const, options);
+      this.options = Object.assign(this.options, options || {})
+
       return this;
     },
-    // Privet
-    _createToast(message) {
-      return new this.$options.components['vue-toast']({data: {
-        message: message
-      }});
+    // Private
+    _addToast(message, options = {}) {
+      if (!message) {
+        return;
+      }
+
+      options.directionOfJumping = this.directionOfJumping;
+
+      this.toasts.unshift({
+        message,
+        options,
+        isDestroyed: false
+      });
     },
-    _pushToast(toast) {
-      const DELAY_JUMP = this.const.DELAY_JUMP > 0 ? this.const.DELAY_JUMP : 0;
-      const MAX_COUNT = this.const.MAX_COUNT > 0 ? this.const.MAX_COUNT: 9999;
+    _moveToast(toast) {
+      const maxToasts = this.options.maxToasts > 0
+        ? this.options.maxToasts
+        : 9999;
 
       // moving||removing old toasts
       this.toasts = this.toasts.reduceRight((prev, toast, i) => {
-        if (toast._isDestroyed) {
-          return prev;
-        }
-        if (i+1 >= MAX_COUNT) {
-          toast.remove();
+        if (toast.isDestroyed) {
           return prev;
         }
 
-        setTimeout(() => {
-          toast.translateY = `${this.directionOfJumping}${(i+1)*100}%`;
-        }, i*DELAY_JUMP);
-        prev.unshift(toast);
+        if (i + 1 >= maxToasts) {
+          return prev;
+        }
 
-        return prev;
+        return [toast].concat(prev);
       }, []);
-
-      // paste new toast
-      setTimeout(() => {
-        toast.$mount().$appendTo(this.$els.toasts);
-      }, DELAY_JUMP);
-
-      this.toasts.unshift(toast);
-      return toast;
     },
     _updateClassesOfPosition(position) {
       return position.split(' ').reduce((prev, val) => {
         prev[`--${val.toLowerCase()}`] = true;
+
         return prev;
       }, {})
     },

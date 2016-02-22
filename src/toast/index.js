@@ -1,41 +1,71 @@
 import './style.css'
 import template from './template.html'
 
+const defaultOptions = {
+  theme: 'default', // info warning error success
+  timeLife: 5000,
+  closeBtn: true,
+};
+
 export default {
   template: template,
-  data() {return {
-    message: '',
-    translateY: '-0%',
-    isShow: false,
-    const: {
-      TIME_LIFE: 5000,
+  props: {
+    message: {
+      required: true
+    },
+    position: {
+      type: Number,
+      required: true
+    },
+    destroyed: {
+      twoWay: true,
+      type: Boolean,
+      required: true
+    },
+    options: {
+      type: Object,
+      coerce(options) {
+        return Object.assign({}, defaultOptions, options)
+      },
+    },
+  },
+  data() {
+    return {
+      isShow: false
     }
-  }},
+  },
   computed: {
+    theme() {
+      return '_' + this.options.theme
+    },
     style() {
-      return `transform: translateY(${this.translateY})`
+      return `transform: translateY(${this.options.directionOfJumping}${this.position * 100}%)`
     }
   },
   ready() {
     setTimeout(() => {
       this.isShow = true;
-    }, 150);
-    this._startLazyAutoDestroy();
+    }, 50);
+
+    if (!this.options.closeBtn) {
+      this._startLazyAutoDestroy();
+    }
   },
   methods: {
     // Public
     remove() {
       this._clearTimer();
+      this.destroyed = true;
       this.$remove().$destroy();
 
       return this;
     },
-    // Privet
+    // Private
     _startLazyAutoDestroy() {
       this._clearTimer();
       this.timerDestroy = setTimeout(() => {
         this.$remove().$destroy();
-      }, this.const.TIME_LIFE);
+      }, this.options.timeLife);
     },
     _clearTimer() {
       if (this.timerDestroy) {
@@ -43,10 +73,14 @@ export default {
       }
     },
     _startTimer() {
-      this._startLazyAutoDestroy();
+      if (!this.options.closeBtn) {
+        this._startLazyAutoDestroy();
+      }
     },
     _stopTimer() {
-      this._clearTimer();
+      if (!this.options.closeBtn) {
+        this._clearTimer();
+      }
     }
   }
 }
