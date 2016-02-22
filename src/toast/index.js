@@ -4,7 +4,7 @@ import template from './template.html'
 const defaultOptions = {
   theme: 'default', // info warning error success
   timeLife: 5000,
-  closeBtn: true,
+  closeBtn: false,
 };
 
 export default {

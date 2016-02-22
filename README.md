@@ -23,14 +23,19 @@ GLobal
 
 ### API
 
-* showToast(string) - main function that generates toast and shows him.
-* setOptions({}) - function for changing settings.
+* showToast(string, {}) - main function that generates toast with some settings of instance toast and shows him.
+* setOptions({}) - function for changing settings of component.
 
 ### Settings
 
-Funcion <code>setOptions({})</code> lets to change settings.
-* DELAY_JUMP {integer} delay moving toasts | default: 30
-* MAX_COUNT {integer} max toasts number | default: 6
+Funcion <code>setOptions({})</code> lets to change settings of component.
+* position {String} position of component | default: 'left bottom' | possible '[left, right] [top, bottom]'
+* maxToasts {Number} max toasts number | default: 6
+
+Funcion <code>showToast(string, {})</code> lets to change settings of current toast.
+* theme {String} style for toast | default: default | possible: info warning error success
+* timeLife {Number} time of life for current toast
+* closeBtn {Boolean} turn off|on button for close toast and disabled|enabled "timeLife"
 
 ### Example
 
