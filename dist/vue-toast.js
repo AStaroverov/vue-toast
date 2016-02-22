@@ -62,7 +62,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	var _manager = __webpack_require__(1);
+	__webpack_require__(1);
+	
+	var _manager = __webpack_require__(2);
 	
 	var _manager2 = _interopRequireDefault(_manager);
 
@@ -71,6 +73,44 @@ return /******/ (function(modules) { // webpackBootstrap
 
 /***/ },
 /* 1 */
+/***/ function(module, exports) {
+
+	'use strict';
+	
+	if (!Object.assign) {
+	  Object.defineProperty(Object, 'assign', {
+	    enumerable: false,
+	    configurable: true,
+	    writable: true,
+	    value: function value(target, firstSource) {
+	      'use strict';
+	      if (target === undefined || target === null) {
+	        throw new TypeError('Cannot convert first argument to object');
+	      }
+	
+	      var to = Object(target);
+	      for (var i = 1; i < arguments.length; i++) {
+	        var nextSource = arguments[i];
+	        if (nextSource === undefined || nextSource === null) {
+	          continue;
+	        }
+	
+	        var keysArray = Object.keys(Object(nextSource));
+	        for (var nextIndex = 0, len = keysArray.length; nextIndex < len; nextIndex++) {
+	          var nextKey = keysArray[nextIndex];
+	          var desc = Object.getOwnPropertyDescriptor(nextSource, nextKey);
+	          if (desc !== undefined && desc.enumerable) {
+	            to[nextKey] = nextSource[nextKey];
+	          }
+	        }
+	      }
+	      return to;
+	    }
+	  });
+	}
+
+/***/ },
+/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -81,21 +121,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	__webpack_require__(2);
+	__webpack_require__(3);
 	
-	var _templateHtml = __webpack_require__(6);
+	var _templateHtml = __webpack_require__(7);
 	
 	var _templateHtml2 = _interopRequireDefault(_templateHtml);
 	
-	var _toast = __webpack_require__(7);
+	var _toast = __webpack_require__(8);
 	
 	var _toast2 = _interopRequireDefault(_toast);
 	
-	var _utilsJs = __webpack_require__(11);
+	var _utilsJs = __webpack_require__(12);
 	
-	var defaultConst = {
-	  DELAY_JUMP: 30,
-	  MAX_COUNT: 6
+	var defaultOptions = {
+	  maxToasts: 6,
+	  position: 'left bottom'
 	};
 	
 	exports['default'] = {
@@ -103,78 +143,96 @@ return /******/ (function(modules) { // webpackBootstrap
 	  data: function data() {
 	    return {
 	      toasts: [],
-	      'const': defaultConst
+	      options: defaultOptions
 	    };
 	  },
-	  components: {
-	    'vue-toast': _toast2['default']
+	  computed: {
+	    classesOfPosition: function classesOfPosition() {
+	      return this._updateClassesOfPosition(this.options.position);
+	    },
+	    directionOfJumping: function directionOfJumping() {
+	      return this._updateDirectionOfJumping(this.options.position);
+	    }
 	  },
 	  methods: {
 	    // Public
-	    showToast: function showToast(message) {
-	      this._pushToast(this._createToast(message));
+	    showToast: function showToast(message, options) {
+	      this._addToast(message, options);
+	      this._moveToast();
+	
 	      return this;
 	    },
 	    setOptions: function setOptions(options) {
-	      this['const'] = Object.assign(this['const'], options);
+	      this.options = Object.assign(this.options, options || {});
+	
 	      return this;
 	    },
-	    // Privet
-	    _createToast: function _createToast(message) {
-	      return new this.$options.components['vue-toast']({ data: {
-	          message: message
-	        } });
+	    // Private
+	    _addToast: function _addToast(message) {
+	      var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	
+	      if (!message) {
+	        return;
+	      }
+	
+	      options.directionOfJumping = this.directionOfJumping;
+	
+	      this.toasts.unshift({
+	        message: message,
+	        options: options,
+	        isDestroyed: false
+	      });
 	    },
-	    _pushToast: function _pushToast(toast) {
-	      var _this = this;
+	    _moveToast: function _moveToast(toast) {
+	      var maxToasts = this.options.maxToasts > 0 ? this.options.maxToasts : 9999;
 	
-	      var DELAY_JUMP = (0, _utilsJs._isNumber)(this['const'].DELAY_JUMP) ? this['const'].DELAY_JUMP : defaultConst.DELAY_JUMP;
-	      var MAX_COUNT = (0, _utilsJs._isNumber)(this['const'].MAX_COUNT) && this['const'].MAX_COUNT >= 1 ? this['const'].MAX_COUNT : defaultConst.MAX_COUNT;
-	
+	      // moving||removing old toasts
 	      this.toasts = this.toasts.reduceRight(function (prev, toast, i) {
-	        if (toast._isDestroyed) {
-	          return prev;
-	        }
-	        if (i + 1 >= MAX_COUNT) {
-	          toast.remove();
+	        if (toast.isDestroyed) {
 	          return prev;
 	        }
 	
-	        setTimeout(function () {
-	          toast.translateY = '-' + (i + 1) * 100 + '%';
-	        }, i * DELAY_JUMP);
-	        prev.unshift(toast);
+	        if (i + 1 >= maxToasts) {
+	          return prev;
+	        }
+	
+	        return [toast].concat(prev);
+	      }, []);
+	    },
+	    _updateClassesOfPosition: function _updateClassesOfPosition(position) {
+	      return position.split(' ').reduce(function (prev, val) {
+	        prev['--' + val.toLowerCase()] = true;
 	
 	        return prev;
-	      }, []);
-	      setTimeout(function () {
-	        toast.$mount().$appendTo(_this.$els.toasts);
-	      }, DELAY_JUMP);
-	
-	      this.toasts.unshift(toast);
-	      return toast;
+	      }, {});
+	    },
+	    _updateDirectionOfJumping: function _updateDirectionOfJumping(position) {
+	      return position.match(/top/i) ? '+' : '-';
 	    }
+	  },
+	  components: {
+	    'vue-toast': _toast2['default']
 	  }
 	};
 	module.exports = exports['default'];
 
 /***/ },
-/* 2 */
+/* 3 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 3 */,
 /* 4 */,
 /* 5 */,
-/* 6 */
+/* 6 */,
+/* 7 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"vue-toast-manager_container\">\n  <div v-el:toasts class=\"vue-toast-manager_toasts\"></div>\n</div>\n";
+	module.exports = "<div class=\"vue-toast-manager_container\" :class=\"classesOfPosition\">\n  <vue-toast\n      v-for=\"toast in toasts\"\n      :message=\"toast.message\"\n      :options=\"toast.options\"\n      :destroyed.sync=\"toast.isDestroyed\"\n      :position=\"$index\"\n    ></vue-toast>\n</div>\n";
 
 /***/ },
-/* 7 */
+/* 8 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -185,27 +243,51 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 	
-	__webpack_require__(8);
+	__webpack_require__(9);
 	
-	var _templateHtml = __webpack_require__(10);
+	var _templateHtml = __webpack_require__(11);
 	
 	var _templateHtml2 = _interopRequireDefault(_templateHtml);
 	
+	var defaultOptions = {
+	  theme: 'default', // info warning error success
+	  timeLife: 5000,
+	  closeBtn: true
+	};
+	
 	exports['default'] = {
 	  template: _templateHtml2['default'],
+	  props: {
+	    message: {
+	      required: true
+	    },
+	    position: {
+	      type: Number,
+	      required: true
+	    },
+	    destroyed: {
+	      twoWay: true,
+	      type: Boolean,
+	      required: true
+	    },
+	    options: {
+	      type: Object,
+	      coerce: function coerce(options) {
+	        return Object.assign({}, defaultOptions, options);
+	      }
+	    }
+	  },
 	  data: function data() {
 	    return {
-	      message: '',
-	      translateY: '-0%',
-	      isShow: false,
-	      'const': {
-	        TIME_LIFE: 5000
-	      }
+	      isShow: false
 	    };
 	  },
 	  computed: {
+	    theme: function theme() {
+	      return '_' + this.options.theme;
+	    },
 	    style: function style() {
-	      return 'transform: translateY(' + this.translateY + ')';
+	      return 'transform: translateY(' + this.options.directionOfJumping + this.position * 100 + '%)';
 	    }
 	  },
 	  ready: function ready() {
@@ -213,25 +295,29 @@ return /******/ (function(modules) { // webpackBootstrap
 	
 	    setTimeout(function () {
 	      _this.isShow = true;
-	    }, 150);
-	    this._startLazyAutoDestroy();
+	    }, 50);
+	
+	    if (!this.options.closeBtn) {
+	      this._startLazyAutoDestroy();
+	    }
 	  },
 	  methods: {
 	    // Public
 	    remove: function remove() {
 	      this._clearTimer();
+	      this.destroyed = true;
 	      this.$remove().$destroy();
 	
 	      return this;
 	    },
-	    // Privet
+	    // Private
 	    _startLazyAutoDestroy: function _startLazyAutoDestroy() {
 	      var _this2 = this;
 	
 	      this._clearTimer();
 	      this.timerDestroy = setTimeout(function () {
 	        _this2.$remove().$destroy();
-	      }, this['const'].TIME_LIFE);
+	      }, this.options.timeLife);
 	    },
 	    _clearTimer: function _clearTimer() {
 	      if (this.timerDestroy) {
@@ -239,30 +325,34 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	    },
 	    _startTimer: function _startTimer() {
-	      this._startLazyAutoDestroy();
+	      if (!this.options.closeBtn) {
+	        this._startLazyAutoDestroy();
+	      }
 	    },
 	    _stopTimer: function _stopTimer() {
-	      this._clearTimer();
+	      if (!this.options.closeBtn) {
+	        this._clearTimer();
+	      }
 	    }
 	  }
 	};
 	module.exports = exports['default'];
 
 /***/ },
-/* 8 */
+/* 9 */
 /***/ function(module, exports) {
 
 	// removed by extract-text-webpack-plugin
 
 /***/ },
-/* 9 */,
-/* 10 */
+/* 10 */,
+/* 11 */
 /***/ function(module, exports) {
 
-	module.exports = "<div class=\"vue-toast_container\"\n     @mouseover=\"_stopTimer\"\n     @mouseleave=\"_startTimer\"\n     :style=\"style\"\n     v-show=\"isShow\"\n     transition>\n  <div class=\"vue-toast_message\">\n    {{ message }}\n  </div>\n</div>\n";
+	module.exports = "<div class=\"vue-toast_container\"\n     @mouseover=\"_stopTimer\"\n     @mouseleave=\"_startTimer\"\n     :style=\"style\"\n     :class=\"[theme]\"\n     v-show=\"isShow\"\n     transition>\n  <div class=\"vue-toast_message\">\n    <span v-html=\"message\"></span>\n    <span class=\"vue-toast_close-btn\"\n          v-if=\"options.closeBtn\"\n          @click=\"remove\">\n    </span>\n  </div>\n</div>\n";
 
 /***/ },
-/* 11 */
+/* 12 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -270,9 +360,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
-	exports._isNumber = _isNumber;
+	exports.isNumber = isNumber;
 	
-	function _isNumber(value) {
+	function isNumber(value) {
 	    return typeof value === "number" && isFinite(value);
 	}
 
