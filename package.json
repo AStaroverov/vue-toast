@@ -1,6 +1,6 @@
 {
   "name": "vue-toast",
-  "version": "2.0.1",
+  "version": "2.0.0",
   "description": "toasts for vuejs",
   "main": "./dist/vue-toast.min.js",
   "dependencies": {},
