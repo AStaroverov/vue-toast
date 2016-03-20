@@ -1,7 +1,7 @@
 # vue-toast
 
 Toasts for vuejs.
-How does it work? Look it [here](http://astaroverov.github.io/).
+How does it work? Look it [here](http://astaroverov.github.io/#!/example/vue-toast).
 
 ### Usage
 
