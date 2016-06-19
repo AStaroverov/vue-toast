@@ -252,7 +252,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	var defaultOptions = {
 	  theme: 'default', // info warning error success
 	  timeLife: 5000,
-	  closeBtn: true
+	  closeBtn: false
 	};
 	
 	exports['default'] = {
@@ -300,6 +300,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!this.options.closeBtn) {
 	      this._startLazyAutoDestroy();
 	    }
+	  },
+	  detached: function detached() {
+	    clearTimeout(this.timerDestroy);
 	  },
 	  methods: {
 	    // Public
