@@ -5,7 +5,7 @@ const defaultOptions = {
   theme: 'default', // info warning error success
   timeLife: 5000,
   closeBtn: false,
-};
+}
 
 export default {
   template: template,
@@ -44,42 +44,45 @@ export default {
   },
   ready() {
     setTimeout(() => {
-      this.isShow = true;
-    }, 50);
+      this.isShow = true
+    }, 50)
 
     if (!this.options.closeBtn) {
-      this._startLazyAutoDestroy();
+      this._startLazyAutoDestroy()
     }
+  },
+  detached() {
+    clearTimeout(this.timerDestroy)
   },
   methods: {
     // Public
     remove() {
-      this._clearTimer();
-      this.destroyed = true;
-      this.$remove().$destroy();
+      this._clearTimer()
+      this.destroyed = true
+      this.$remove().$destroy()
 
-      return this;
+      return this
     },
     // Private
     _startLazyAutoDestroy() {
-      this._clearTimer();
+      this._clearTimer()
       this.timerDestroy = setTimeout(() => {
-        this.$remove().$destroy();
-      }, this.options.timeLife);
+        this.$remove().$destroy()
+      }, this.options.timeLife)
     },
     _clearTimer() {
       if (this.timerDestroy) {
-        clearTimeout(this.timerDestroy);
+        clearTimeout(this.timerDestroy)
       }
     },
     _startTimer() {
       if (!this.options.closeBtn) {
-        this._startLazyAutoDestroy();
+        this._startLazyAutoDestroy()
       }
     },
     _stopTimer() {
       if (!this.options.closeBtn) {
-        this._clearTimer();
+        this._clearTimer()
       }
     }
   }
