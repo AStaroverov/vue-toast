@@ -5,20 +5,31 @@ How does it work? Look it [here](http://astaroverov.github.io/#!/example/vue-toa
 
 ### Usage
 
-commonJS:
-```
-import 'vue-toast/dist/vue-toast.min.css'
-import vueToast from 'vue-toast'
-Vue.component('vue-toast', vueToast);
-```
-
-GLobal
+Global
 ```
 <link rel="stylesheet" href="./path/to/vue-toast.min.css" charset="utf-8">
 <script src='./path/to/vue-toast.min.js'></script>
-<script>
-  Vue.component('vue-toast', window.vueToast);
-</script>
+// it available in window.vueToast
+```
+
+Import:
+```
+import 'vue-toast/dist/vue-toast.min.css'
+import VueToast from 'vue-toast'
+
+
+new Vue({
+  template: '<div> <vue-toast v-ref="toast"></vue-toast> </div>',
+  components: {
+    VueToast: VueToast
+  },
+  ready() {
+    const toast = this.$refs.toast
+    
+    toast.showToast('Show me toast')
+    toast.showToast('Show me toast again!')
+  }
+})
 ```
 
 ### API
