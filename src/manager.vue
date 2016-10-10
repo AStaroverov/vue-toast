@@ -1,16 +1,25 @@
-import './style.css'
-import template from './template.html'
-import vueToast from '../toast'
+<template>
+  <div class="vue-toast-manager_container" :class="classesOfPosition">
+    <vue-toast
+        v-for="(toast, index) in toasts"
+        :message="toast.message"
+        :options="toast.options"
+        :position="index"
+        @destroyed="onDestroyed(toast)"
+      ></vue-toast>
+  </div>
+</template>
 
-import {isNumber} from '../utils.js'
+<script>
+import vueToast from './toast.vue'
+import {isNumber} from './utils.js'
 
 const defaultOptions = {
   maxToasts: 6,
-  position: 'left bottom'
+  position: 'right bottom'
 }
 
 export default {
-  template: template,
   data() {
     return {
       toasts: [],
@@ -28,6 +37,7 @@ export default {
   methods: {
     // Public
     showToast(message, options) {
+      options = Object.assign(this.options, options || {})
       this._addToast(message, options)
       this._moveToast()
 
@@ -35,8 +45,10 @@ export default {
     },
     setOptions(options) {
       this.options = Object.assign(this.options, options || {})
-
       return this
+    },
+    onDestroyed (toast) {
+      toast.isDestroyed = true
     },
     // Private
     _addToast(message, options = {}) {
@@ -48,8 +60,7 @@ export default {
 
       this.toasts.unshift({
         message,
-        options,
-        isDestroyed: false
+        options
       })
     },
     _moveToast(toast) {
@@ -82,6 +93,31 @@ export default {
     }
   },
   components: {
-    'vue-toast': vueToast
+    vueToast
   }
 }
+</script>
+
+<style lang="sass">
+  .vue-toast-manager_container {
+    position: fixed;
+    width: 100%;
+
+    &.--top {
+      top: 10px;
+    }
+    &.--bottom {
+      bottom: 10px;
+    }
+    &.--left {
+      left: 10px;
+    }
+    &.--right {
+      right: 10px;
+    }
+  }
+
+  .vue-toast-manager_toasts {
+    position: relative;
+  }
+</style>

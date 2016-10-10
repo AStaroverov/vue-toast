@@ -3,17 +3,22 @@
   "version": "2.0.3",
   "description": "toasts for vuejs",
   "main": "./dist/vue-toast.min.js",
-  "dependencies": {},
+  "dependencies": {
+    "vue": "^2.0.1",
+    "vue-loader": "^9.5.1"
+  },
   "devDependencies": {
     "autoprefixer": "^6.1.0",
     "babel-core": "^5.8.33",
     "babel-loader": "^5.3.3",
     "css-loader": "^0.22.0",
     "extract-text-webpack-plugin": "^0.9.1",
+    "node-sass": "^3.10.1",
     "postcss": "^5.0.10",
     "postcss-hexrgba": "^0.2.0",
     "postcss-loader": "^0.7.0",
     "postcss-nested": "^1.0.0",
+    "sass-loader": "^4.0.2",
     "style-loader": "^0.13.0",
     "vue-html-loader": "^1.0.0",
     "webpack": "^1.12.3",

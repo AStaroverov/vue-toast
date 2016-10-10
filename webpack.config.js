@@ -13,7 +13,7 @@ module.exports = {
   module: {
     loaders: [
       { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader") },
-      { test: /\.html$/, loader: "vue-html" },
+      { test: /\.vue$/, loader: 'vue' },
       { test: /\.js$/, loader: "babel", exclude: /node_modules/ }
     ]
   },
