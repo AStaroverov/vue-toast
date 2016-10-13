@@ -3,10 +3,7 @@
   "version": "2.0.3",
   "description": "toasts for vuejs",
   "main": "./dist/vue-toast.min.js",
-  "dependencies": {
-    "vue": "^2.0.1",
-    "vue-loader": "^9.5.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "autoprefixer": "^6.1.0",
     "babel-core": "^5.8.33",
@@ -22,7 +19,9 @@
     "style-loader": "^0.13.0",
     "vue-html-loader": "^1.0.0",
     "webpack": "^1.12.3",
-    "webpack-dev-server": "^1.12.1"
+    "webpack-dev-server": "^1.12.1",
+    "vue": "^2.0.1",
+    "vue-loader": "^9.5.1"
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",

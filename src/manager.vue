@@ -5,14 +5,14 @@
         :message="toast.message"
         :options="toast.options"
         :position="index"
-        @destroyed="onDestroyed(toast)"
+        @destroyed="_onDestroyed(toast)"
       ></vue-toast>
   </div>
 </template>
 
 <script>
 import vueToast from './toast.vue'
-import {isNumber} from './utils.js'
+import {isNumber, isObject} from './utils.js'
 
 const defaultOptions = {
   maxToasts: 6,
@@ -44,13 +44,15 @@ export default {
       return this
     },
     setOptions(options) {
-      this.options = Object.assign(this.options, options || {})
+      if (isObject(option)) {
+        this.options = Object.assign({}, this.options, option)
+      }
       return this
     },
-    onDestroyed (toast) {
+    // Private
+    _onDestroyed (toast) {
       toast.isDestroyed = true
     },
-    // Private
     _addToast(message, options = {}) {
       if (!message) {
         return
