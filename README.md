@@ -9,7 +9,7 @@ Global
 ```
 <link rel="stylesheet" href="./path/to/vue-toast.min.css" charset="utf-8">
 <script src='./path/to/vue-toast.min.js'></script>
-// it available in window.vueToast
+// it available in window.vueToasts
 ```
 
 Import:
