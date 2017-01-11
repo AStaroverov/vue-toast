@@ -47,7 +47,3 @@ Funcion <code>showToast(string, {})</code> lets to change settings of current to
 * theme {String} style for toast | default: default | possible: info warning error success
 * timeLife {Number} time of life for current toast
 * closeBtn {Boolean} turn off|on button for close toast and disabled|enabled "timeLife"
-
-### Example
-
-Look [here](https://github.com/AStaroverov/vue-toast/blob/master/index.html).
