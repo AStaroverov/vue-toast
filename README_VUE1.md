@@ -1,12 +1,15 @@
 # vue-toast
 
-Toasts for Vue 2. [Vue 1](https://github.com/AStaroverov/vue-toast/blob/master/README_VUE1.md)
+Toasts for vuejs.
 How does it work? Look it [here](http://astaroverov.github.io/#!/example/vue-toast).
 
 ### Usage
-Install:
+
+Global
 ```
-npm i vue-toast
+<link rel="stylesheet" href="./path/to/vue-toast.min.css" charset="utf-8">
+<script src='./path/to/vue-toast.min.js'></script>
+// it available in window.vueToasts
 ```
 
 Import:
@@ -14,23 +17,19 @@ Import:
 import 'vue-toast/dist/vue-toast.min.css'
 import VueToast from 'vue-toast'
 
+
 new Vue({
-  template: "<div> <vue-toast ref='toast'></vue-toast> </div>",
-  components: { VueToast },
-  mounted() {
+  template: '<div> <vue-toast v-ref:toast></vue-toast> </div>',
+  components: {
+    VueToast: VueToast
+  },
+  ready() {
     const toast = this.$refs.toast
 
     toast.showToast('Show me toast')
     toast.showToast('Show me toast again!')
   }
 })
-```
-
-Global
-```
-<link rel="stylesheet" href="./path/to/vue-toast.min.css" charset="utf-8">
-<script src='./path/to/vue-toast.min.js'></script>
-// it available in window.vueToasts.default
 ```
 
 ### API
