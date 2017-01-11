@@ -5,6 +5,11 @@ How does it work? Look it [here](http://astaroverov.github.io/#!/example/vue-toa
 
 ### Usage
 
+Install
+```
+npm i vue-toast@2
+```
+
 Global
 ```
 <link rel="stylesheet" href="./path/to/vue-toast.min.css" charset="utf-8">
