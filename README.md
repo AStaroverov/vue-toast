@@ -1,6 +1,7 @@
 # vue-toast
 
-Toasts for Vue 2. [Vue 1](https://github.com/AStaroverov/vue-toast/blob/master/README_VUE1.md)
+Toasts for Vue 2. ([Vue 1](https://github.com/AStaroverov/vue-toast/blob/master/README_VUE1.md))
+
 How does it work? Look it [here](http://astaroverov.github.io/#!/example/vue-toast).
 
 ### Usage
