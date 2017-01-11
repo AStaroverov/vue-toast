@@ -2,7 +2,7 @@
   position: absolute;
   padding-bottom: 10px;
   transform: translateY(0);
-  transition: transform .2s ease-out, opacity .3s ease-out;
+  transition: transform .2s ease-out;
   backface-visibility: hidden;
 
   &._default .vue-toast_message {
@@ -23,7 +23,6 @@
 
 }
 
-
 .vue-toast-manager_container {
   &.--top .vue-toast_container {
     top: 0;
@@ -37,11 +36,6 @@
   &.--right .vue-toast_container {
     right: 0;
   }
-}
-
-.vue-toast_container.v-enter,
-.vue-toast_container.v-leave {
-  opacity: 0;
 }
 
 .vue-toast_message {
@@ -82,4 +76,19 @@
   &::after {
     transform: rotate(-45deg);
   }
+}
+
+.vue-toast-enter-active {
+  opacity: 0;
+  transition: all .2s ease-out;
+}
+.vue-toast-enter-to {
+  opacity: 1;
+}
+.vue-toast-leave-active {
+  opacity: 1;
+  transition: all .1s ease-out;
+}
+.vue-toast-leave-to {
+  opacity: 0;
 }

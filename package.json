@@ -6,8 +6,8 @@
   "dependencies": {},
   "devDependencies": {
     "autoprefixer": "^6.1.0",
-    "babel-core": "^5.8.33",
-    "babel-loader": "^5.3.3",
+    "babel-core": "^6.21.0",
+    "babel-loader": "^6.2.10",
     "css-loader": "^0.22.0",
     "extract-text-webpack-plugin": "^0.9.1",
     "postcss": "^5.0.10",
@@ -15,14 +15,16 @@
     "postcss-loader": "^0.7.0",
     "postcss-nested": "^1.0.0",
     "style-loader": "^0.13.0",
-    "vue-html-loader": "^1.0.0",
-    "webpack": "^1.12.3",
-    "webpack-dev-server": "^1.12.1"
+    "vue": "^2.1.8",
+    "vue-loader": "^10.0.2",
+    "vue-template-compiler": "^2.1.8",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
   },
   "scripts": {
     "build": "webpack --config webpack.config.js",
     "build_min": "NODE_ENV=production webpack --config webpack.config.js",
-    "serverv": "webpack-dev-server --hot --inline"
+    "server": "webpack-dev-server --hot --inline"
   },
   "repository": {
     "type": "git",

@@ -1,3 +1,4 @@
+var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
@@ -12,16 +13,27 @@ module.exports = {
   },
   module: {
     loaders: [
-      { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader") },
-      { test: /\.html$/, loader: "vue-html" },
+      { test: /\.vue$/, loader: "vue" },
       { test: /\.js$/, loader: "babel", exclude: /node_modules/ }
-    ]
+      // { test: /\.css$/, loader: ExtractTextPlugin.extract("style-loader", "css-loader!postcss-loader") },
+    ],
+    resolve: {
+      extensions: ['', '.js', '.vue', '.css']
+    },
+    resolveLoader: {
+      root: path.join(__dirname, 'node_modules')
+    }
   },
-  postcss: function () {return [
-    require('autoprefixer'),
-    require('postcss-nested'),
-    require('postcss-hexrgba'),
-  ]},
+  vue: {
+    postcss: [
+      require('autoprefixer'),
+      require('postcss-nested'),
+      require('postcss-hexrgba'),
+    ],
+    loaders: {
+      css: ExtractTextPlugin.extract('css')
+    }
+  },
   plugins: [
     new ExtractTextPlugin("vue-toast.css")
   ]

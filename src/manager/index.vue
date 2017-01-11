@@ -1,7 +1,25 @@
-import './style.css'
-import template from './template.html'
-import vueToast from '../toast'
+<style src='./style.css'></style>
 
+<template>
+  <transition-group
+    tag='div'
+    name='vue-toast'
+    class='vue-toast-manager_container'
+    :class='classesOfPosition'
+  >
+    <vue-toast
+      v-for='(toast, index) in toasts'
+      :key='toast.uid'
+      :message='toast.message'
+      :options='toast.options'
+      :onDestroy='toast.onDestroy'
+      :position='index'
+    ></vue-toast>
+  </transition-group>
+</template>
+
+<script>
+import VueToast from '../toast/index.vue'
 import {isNumber} from '../utils.js'
 
 const defaultOptions = {
@@ -10,9 +28,9 @@ const defaultOptions = {
 }
 
 export default {
-  template: template,
   data() {
     return {
+      uid: 1,
       toasts: [],
       options: defaultOptions
     }
@@ -46,23 +64,26 @@ export default {
 
       options.directionOfJumping = this.directionOfJumping
 
-      this.toasts.unshift({
+      const that = this
+      const uid = this.uid++
+      const toast = {
+        uid,
         message,
         options,
-        isDestroyed: false
-      })
+        onDestroy() {
+          const i = that.toasts.findIndex(item => item.uid === uid)
+          that.toasts.splice(i, 1)
+        }
+      }
+
+      this.toasts.unshift(toast)
     },
     _moveToast(toast) {
       const maxToasts = this.options.maxToasts > 0
         ? this.options.maxToasts
         : 9999
 
-      // moving||removing old toasts
       this.toasts = this.toasts.reduceRight((prev, toast, i) => {
-        if (toast.isDestroyed) {
-          return prev
-        }
-
         if (i + 1 >= maxToasts) {
           return prev
         }
@@ -81,7 +102,6 @@ export default {
       return position.match(/top/i) ? '+' : '-'
     }
   },
-  components: {
-    'vue-toast': vueToast
-  }
+  components: { VueToast }
 }
+</script>

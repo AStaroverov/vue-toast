@@ -1,6 +1,28 @@
-import './style.css'
-import template from './template.html'
+<style src="./style.css"></style>
 
+<template>
+  <transition name="vue-toast-opacity">
+    <div
+      class='vue-toast_container'
+      @mouseover='_stopTimer'
+      @mouseleave='_startTimer'
+      :style='style'
+      :class='[theme]'
+    >
+      <div class='vue-toast_message'>
+        <span v-html='message'></span>
+        <span
+          class='vue-toast_close-btn'
+          v-if='options.closeBtn'
+          @click='remove'
+        />
+        </span>
+      </div>
+    </div>
+  </transition>
+</template>
+
+<script>
 const defaultOptions = {
   theme: 'default', // info warning error success
   timeLife: 5000,
@@ -8,7 +30,6 @@ const defaultOptions = {
 }
 
 export default {
-  template: template,
   props: {
     message: {
       required: true
@@ -17,17 +38,13 @@ export default {
       type: Number,
       required: true
     },
-    destroyed: {
-      twoWay: true,
-      type: Boolean,
-      required: true
+    onDestroy: {
+      required: true,
+      type: Function
     },
     options: {
-      type: Object,
-      coerce(options) {
-        return Object.assign({}, defaultOptions, options)
-      },
-    },
+      type: Object
+    }
   },
   data() {
     return {
@@ -40,35 +57,32 @@ export default {
     },
     style() {
       return `transform: translateY(${this.options.directionOfJumping}${this.position * 100}%)`
+    },
+    fullOptions() {
+      return Object.assign({}, defaultOptions, this.options)
     }
   },
-  ready() {
+  mounted() {
     setTimeout(() => {
       this.isShow = true
     }, 50)
 
-    if (!this.options.closeBtn) {
+    if (!this.fullOptions.closeBtn) {
       this._startLazyAutoDestroy()
     }
-  },
-  detached() {
-    clearTimeout(this.timerDestroy)
   },
   methods: {
     // Public
     remove() {
       this._clearTimer()
-      this.destroyed = true
-      this.$remove().$destroy()
-
-      return this
+      this.onDestroy()
     },
     // Private
     _startLazyAutoDestroy() {
       this._clearTimer()
       this.timerDestroy = setTimeout(() => {
-        this.$remove().$destroy()
-      }, this.options.timeLife)
+        this.remove()
+      }, this.fullOptions.timeLife)
     },
     _clearTimer() {
       if (this.timerDestroy) {
@@ -76,7 +90,7 @@ export default {
       }
     },
     _startTimer() {
-      if (!this.options.closeBtn) {
+      if (!this.fullOptions.closeBtn) {
         this._startLazyAutoDestroy()
       }
     },
@@ -87,3 +101,4 @@ export default {
     }
   }
 }
+</script>

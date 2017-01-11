@@ -1,47 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Vue toast</title>
   <link rel="stylesheet" href="/dist/vue-toast.css" charset="utf-8">
 </head>
-<body id='app'>
-  <h3>Options of component.</h3>
-  <br>
-  <label>
+
+<body>
+  <div id='app'>
+    <h3>Options of component.</h3>
+    <br>
+    <label>
     <input type="text" v-model="maxToasts">
     maxToasts
   </label>
-  <br>
-  <label>
+    <br>
+    <label>
     <input type="text" v-model="position">
     position
   </label>
 
-  <hr>
+    <hr>
 
-  <h3>Options of toast.</h3>
-  <label>
+    <h3>Options of toast.</h3>
+    <label>
     <input type="text" v-model="theme">
     theme
   </label>
-  <br>
-  <label>
+    <br>
+    <label>
     <input type="text" v-model="timeLife">
     timeLife
   </label>
-  <br>
-  <label>
+    <br>
+    <label>
     <input type="checkbox" v-model="closeBtn">
     closeBtn
   </label>
-  <hr>
+    <hr>
 
-  <button type="button" name="button" @click="showTime">SHOW TIME</button>
-  <vue-toast v-ref:toast></vue-toast>
+    <button type="button" name="button" @click="showTime">SHOW TIME</button>
+    <vue-toast ref='toast'></vue-toast>
+  </div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.25/vue.js" charset="utf-8"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.8/vue.js" charset="utf-8"></script>
   <script src="./dist/vue-toast.js"></script>
+
   <script>
     new Vue({
       el: '#app',
@@ -53,9 +58,11 @@
         closeBtn: true,
       },
       watch: {
-        'delayOfJumps + maxToasts + position': 'resetOptions'
+        'delayOfJumps': 'resetOptions',
+        'maxToasts': 'resetOptions',
+        'position': 'resetOptions'
       },
-      attached() {
+      mounted() {
         this.resetOptions()
       },
       methods: {
@@ -75,9 +82,10 @@
         }
       },
       components: {
-        'vue-toast': window.vueToasts
+        'vue-toast': window.vueToasts.default
       }
     })
   </script>
 </body>
+
 </html>
