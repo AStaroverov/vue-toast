@@ -52,4 +52,4 @@ Funcion <code>showToast(string, {})</code> lets to change settings of current to
 
 ### Example
 
-Look [here](https://github.com/AStaroverov/vue-toast/blob/master/index.html).
+Look [here](https://rawgit.com/AStaroverov/vue-toast/master/index.html).
