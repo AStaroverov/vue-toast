@@ -38,6 +38,7 @@ Global
 
 * showToast(string, {}) - main function that generates toast with some settings of instance toast and shows him.
 * setOptions({}) - function for changing settings of component.
+* closeAll({}) - function for close all toasts.
 
 ### Settings
 

@@ -24,16 +24,16 @@
 }
 
 .vue-toast-manager_container {
-  &.--top .vue-toast_container {
+  &.__top .vue-toast_container {
     top: 0;
   }
-  &.--bottom .vue-toast_container {
+  &.__bottom .vue-toast_container {
     bottom: 0;
   }
-  &.--left .vue-toast_container {
+  &.__left .vue-toast_container {
     left: 0;
   }
-  &.--right .vue-toast_container {
+  &.__right .vue-toast_container {
     right: 0;
   }
 }

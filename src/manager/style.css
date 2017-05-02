@@ -2,16 +2,16 @@
   position: fixed;
   width: 100%;
 
-  &.--top {
+  &.__top {
     top: 10px;
   }
-  &.--bottom {
+  &.__bottom {
     bottom: 10px;
   }
-  &.--left {
+  &.__left {
     left: 10px;
   }
-  &.--right {
+  &.__right {
     right: 10px;
   }
 }

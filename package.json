@@ -1,10 +1,16 @@
 {
   "name": "vue-toast",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "toasts for vuejs",
   "main": "./dist/vue-toast.min.js",
   "dependencies": {},
   "devDependencies": {
+    "csso": "^3.1.1",
+    "rollup": "^0.41.6",
+    "rollup-plugin-buble": "^0.15.0",
+    "rollup-plugin-css-only": "^0.2.0",
+    "rollup-plugin-uglify": "^1.0.2",
+    "rollup-plugin-vue2": "^0.8.0",
     "autoprefixer": "^6.1.0",
     "babel-core": "^6.21.0",
     "babel-loader": "^6.2.10",
@@ -22,8 +28,8 @@
     "webpack-dev-server": "^1.16.2"
   },
   "scripts": {
-    "build": "webpack --config webpack.config.js",
-    "build_min": "NODE_ENV=production webpack --config webpack.config.js",
+    "build": "rollup -c",
+    "build_min": "NODE_ENV=production rollup -c",
     "server": "webpack-dev-server --hot --inline"
   },
   "repository": {

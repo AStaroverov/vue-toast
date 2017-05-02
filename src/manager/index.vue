@@ -56,6 +56,9 @@ export default {
 
       return this
     },
+    closeAll() {
+      this.toasts = []
+    },
     // Private
     _addToast(message, options = {}) {
       if (!message) {
@@ -93,7 +96,7 @@ export default {
     },
     _updateClassesOfPosition(position) {
       return position.split(' ').reduce((prev, val) => {
-        prev[`--${val.toLowerCase()}`] = true
+        prev[`__${val.toLowerCase()}`] = true
 
         return prev
       }, {})
