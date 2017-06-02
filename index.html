@@ -49,6 +49,7 @@
   <script src="./dist/vue-toast.js"></script>
 
   <script>
+    const VueToast = window.vueToasts ? window.vueToasts.default || window.vueToasts : window.vueToasts
     new Vue({
       el: '#app',
       data: {
@@ -86,7 +87,7 @@
         }
       },
       components: {
-        'vue-toast': window.vueToasts
+        VueToast
       }
     })
   </script>
