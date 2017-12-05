@@ -42,11 +42,11 @@ Global
 
 ### Settings
 
-Funcion <code>setOptions({})</code> lets to change settings of component.
+Function <code>setOptions({})</code> lets to change settings of component.
 * position {String} position of component | default: 'left bottom' | possible '[left, right] [top, bottom]'
 * maxToasts {Number} max toasts number | default: 6
 
-Funcion <code>showToast(string, {})</code> lets to change settings of current toast.
+Function <code>showToast(string, {})</code> lets to change settings of current toast.
 * theme {String} style for toast | default: default | possible: info warning error success
 * timeLife {Number} time of life for current toast
 * closeBtn {Boolean} turn off|on button for close toast and disabled|enabled "timeLife"
