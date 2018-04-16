@@ -31,7 +31,7 @@
   "scripts": {
     "build": "rollup -c",
     "build_min": "NODE_ENV=production rollup -c",
-    "server": "webpack-dev-server --hot --inline"
+    "server": "webpack-dev-server --hot --inline --port=8383"
   },
   "repository": {
     "type": "git",

@@ -11,6 +11,7 @@
       v-for='(toast, index) in toasts'
       :key='toast.uid'
       :message='toast.message'
+      :component='toast.component'
       :options='toast.options'
       :onDestroy='toast.onDestroy'
       :position='index'
@@ -20,7 +21,6 @@
 
 <script>
 import VueToast from '../toast/index.vue'
-import {isNumber} from '../utils.js'
 
 const defaultOptions = {
   maxToasts: 6,
@@ -45,8 +45,8 @@ export default {
   },
   methods: {
     // Public
-    showToast(message, options) {
-      this._addToast(message, options)
+    showToast(messageOrComponent, options) {
+      this._addToast(messageOrComponent, options)
       this._moveToast()
 
       return this
@@ -60,8 +60,8 @@ export default {
       this.toasts = []
     },
     // Private
-    _addToast(message, options = {}) {
-      if (!message) {
+    _addToast(messageOrComponent, options = {}) {
+      if (!messageOrComponent) {
         return
       }
 
@@ -71,12 +71,17 @@ export default {
       const uid = this.uid++
       const toast = {
         uid,
-        message,
         options,
         onDestroy() {
           const i = that.toasts.findIndex(item => item.uid === uid)
           that.toasts.splice(i, 1)
         }
+      }
+
+      if (typeof messageOrComponent === 'function') {
+        toast.component = messageOrComponent;
+      } else {
+        toast.message = messageOrComponent;
       }
 
       this.toasts.unshift(toast)

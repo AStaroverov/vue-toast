@@ -41,6 +41,7 @@
     <hr>
 
     <button type="button" name="button" @click="showTime">SHOW TIME</button>
+    <button type="button" name="button" @click="showCustomToast">SHOW CUSTOM TOAST</button>
     <button type="button" name="button" @click="closeAll">Close all</button>
     <vue-toast ref='toast'></vue-toast>
   </div>
@@ -50,6 +51,26 @@
 
   <script>
     const VueToast = window.vueToasts ? window.vueToasts.default || window.vueToasts : window.vueToasts
+
+    const CustomToast = Vue.component('vue-custom-toast', {
+      template: `
+        <h1
+          style="display: block; width: 300px; height: 100px; background: cornflowerblue"
+          @click="onClick"
+        >
+          {{ message }}
+        </h1>
+      `,
+      data () {
+        return { message: 'Custom Component!!!' }
+      },
+      methods: {
+        onClick() {
+          this.$emit('remove')
+        }
+      }
+    })
+
     new Vue({
       el: '#app',
       data: {
@@ -80,6 +101,11 @@
             theme: this.theme,
             timeLife: this.timeLife,
             closeBtn: this.closeBtn
+          })
+        },
+        showCustomToast() {
+          this.$refs.toast.showToast(CustomToast, {
+            timeLife: this.timeLife,
           })
         },
         closeAll() {

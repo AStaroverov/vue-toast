@@ -9,11 +9,12 @@
       :style='style'
       :class='[theme]'
     >
-      <div class='vue-toast_message'>
+      <component v-if='component' :is='component' @remove='remove'></component>
+      <div v-else class='vue-toast_message'>
         <span v-html='message'></span>
         <span
-          class='vue-toast_close-btn'
           v-if='options.closeBtn'
+          class='vue-toast_close-btn'
           @click='remove'
         />
         </span>
@@ -31,9 +32,8 @@ const defaultOptions = {
 
 export default {
   props: {
-    message: {
-      required: true
-    },
+    component: {},
+    message: {},
     position: {
       type: Number,
       required: true
@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     theme() {
-      return '_' + this.options.theme
+      return this.options.theme ? '_' + this.options.theme : ''
     },
     style() {
       return `transform: translateY(${this.options.directionOfJumping}${this.position * 100}%)`
@@ -67,7 +67,7 @@ export default {
       this.isShow = true
     }, 50)
 
-    if (!this.fullOptions.closeBtn) {
+    if (this._canSetDestroyer()) {
       this._startLazyAutoDestroy()
     }
   },
@@ -78,6 +78,9 @@ export default {
       this.onDestroy()
     },
     // Private
+    _canSetDestroyer () {
+      return Number(this.fullOptions.timeLife) > 0;
+    },
     _startLazyAutoDestroy() {
       this._clearTimer()
       this.timerDestroy = setTimeout(() => {
@@ -90,12 +93,12 @@ export default {
       }
     },
     _startTimer() {
-      if (!this.fullOptions.closeBtn) {
+      if (this._canSetDestroyer()) {
         this._startLazyAutoDestroy()
       }
     },
     _stopTimer() {
-      if (!this.options.closeBtn) {
+      if (this._canSetDestroyer()) {
         this._clearTimer()
       }
     }
