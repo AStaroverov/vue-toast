@@ -10,7 +10,7 @@
       :class='[theme]'
     >
       <div class='vue-toast_message'>
-        <span v-html='message'></span>
+        <slot></slot>
         <span
           class='vue-toast_close-btn'
           v-if='options.closeBtn'
@@ -31,9 +31,6 @@ const defaultOptions = {
 
 export default {
   props: {
-    message: {
-      required: true
-    },
     position: {
       type: Number,
       required: true

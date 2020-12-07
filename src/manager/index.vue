@@ -10,16 +10,17 @@
     <vue-toast
       v-for='(toast, index) in toasts'
       :key='toast.uid'
-      :message='toast.message'
       :options='toast.options'
       :onDestroy='toast.onDestroy'
       :position='index'
-    ></vue-toast>
+    ><toast-content :message='toast.message'></toast-content>
+    </vue-toast>
   </transition-group>
 </template>
 
 <script>
 import VueToast from '../toast/index.vue'
+import ToastContent from '../toast-content/index.vue'
 import {isNumber} from '../utils.js'
 
 const defaultOptions = {
@@ -105,6 +106,6 @@ export default {
       return position.match(/top/i) ? '+' : '-'
     }
   },
-  components: { VueToast }
+  components: { VueToast, ToastContent }
 }
 </script>
